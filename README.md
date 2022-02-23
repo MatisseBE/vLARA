@@ -1,0 +1,2 @@
+# VATSIMareas
+Data from EC
