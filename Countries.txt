@@ -1,0 +1,70 @@
+{
+    "Austria" : {
+        "Data" : "",
+        "Code" : "LO"
+    },
+    "Belgium" : {
+        "Data" : "",
+        "Code" : "EB"
+    },
+    "Cyprus" : {
+        "Data" : "",
+        "Code" : "LC"
+    },
+    "Denmark" : {
+        "Data" : "",
+        "Code" : "EK"
+    },
+    "France" : {
+        "Data" : "",
+        "Code" : "LF"
+    },
+    "Finland" : {
+        "Data" : "",
+        "Code" : "EF"
+    },
+    "Germany" : {
+        "Data" : "",
+        "Code" : "ED"
+    },
+    "Greece" : {
+        "Data" : "",
+        "Code" : "LG"
+    },
+    "Hungary" : {
+        "Data" : "",
+        "Code" : "LH"
+    },
+    "Ireland" : {
+        "Data" : "",
+        "Code" : "EI"
+    },
+    "Luxembourg" : {
+        "Data" : "",
+        "Code" : "EL"
+    },
+    "Norway" : {
+        "Data" : "",
+        "Code" : "EN"
+    },
+    "Malta" : {
+        "Data" : "",
+        "Code" : "LM"
+    },
+    "Portugal" : {
+        "Data" : "",
+        "Code" : "LP"
+    },
+    "Spain" : {
+        "Data" : "",
+        "Code" : "LE"
+    },
+    "Turkey" : {
+        "Data" : "",
+        "Code" : "LT"
+    },
+    "Uk" : {
+        "Data" : "",
+        "Code" : "EG"
+    }   
+}
