@@ -1,5 +1,4 @@
 # VATSIM Areas
-All data provided from EC NM
 
 
 ## What?
@@ -17,4 +16,7 @@ All data provided from EC NM
 
 
 ## Those other files?
+
+## Note
+All data provided from EC NM
 
