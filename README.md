@@ -1,2 +1,2 @@
 # VATSIMareas
-Data from EC
+All data provided from EC NM
