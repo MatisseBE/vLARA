@@ -5,7 +5,7 @@ import requests
 import json
 
 def uploadtoGithub(data, name):
-    #github token
+    #Github token
     with open("token.txt","r") as file: 
         token = file.read()
 
@@ -24,7 +24,6 @@ def uploadtoGithub(data, name):
 
     content = data
 
-    # Upload to github
     git_file = name
     if git_file in all_files:
         contents = repo.get_contents(git_file)
@@ -52,7 +51,6 @@ def parseAreas(countries,data):
 
 
         for country in countries.keys():
-            #print(AreaName,countries[country]["Code"], AreaName.startswith(countries[country]["Code"] ))
             if AreaName.startswith(countries[country]["Code"]):
                 countries[country]["Data"] += row
       except:
@@ -64,11 +62,10 @@ try:
     data = pd.read_csv("https://raw.githubusercontent.com/MatisseBE/VATSIMareas/main/areas.csv")
 
 except:
-    print("Culd not get countries or data")
+    print("Could not get countries or data from Github")
 
 #Parse data
 parseAreas(countries,data)
-print(countries)
 
 #Upload data
 for country in countries.keys():
