@@ -74,5 +74,5 @@
     "Ukraine" : {
         "Data" : "",
         "Code" : "UK"
-    },
+    }
 }
