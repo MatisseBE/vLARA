@@ -47,22 +47,24 @@ def parseAreas(countries,data):
         Lower = int(row["MNM FL"])*100
         Upper = int(row["MAX FL"])*100
 
-        row = f"{AreaName}:{SchedStartDate}:{SchedEndDate}:{SchedWeekdays}:{StartTime}:{EndTime}:{Lower}:{Upper}\n"
+        row = f"{AreaName}:{SchedStartDate}:{SchedEndDate}:{SchedWeekdays}:{StartTime}:{EndTime}:{Lower}:{Upper}:From AUP/UUP\n"
 
 
         for country in countries.keys():
             if AreaName.startswith(countries[country]["Code"]):
                 countries[country]["Data"] += row
-      except:
+      except Exception as e:
           print("Couldn't read data on row ", index)
+          
     
 
 try:
     countries = json.loads(requests.get("https://raw.githubusercontent.com/MatisseBE/VATSIMareas/main/Countries.txt").text)
-    data = pd.read_csv("https://raw.githubusercontent.com/MatisseBE/VATSIMareas/main/areas.csv")
+    data = pd.read_csv("areas.csv")
 
-except:
+except Exception as e:
     print("Could not get countries or data from Github")
+    print(e.args)
 
 #Parse data
 parseAreas(countries,data)
@@ -70,4 +72,3 @@ parseAreas(countries,data)
 #Upload data
 for country in countries.keys():
     uploadtoGithub(countries[country]["Data"],"Datafiles/%s.txt" % (country))
-
