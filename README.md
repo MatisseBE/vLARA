@@ -22,5 +22,7 @@ You can make a pull request to add your country to the list. If the data source 
 ## Note
 All data provided by EC NM.
 
+For flightsimulation only!
+
 Made with love ❤, and a lot of cookies 🍪
 
