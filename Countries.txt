@@ -59,6 +59,10 @@
         "Data" : "",
         "Code" : "LE"
     },
+    "Switzerland" : {
+        "Data" : "",
+        "Code" : "LS"
+    },
     "Turkey" : {
         "Data" : "",
         "Code" : "LT"
@@ -66,5 +70,9 @@
     "Uk" : {
         "Data" : "",
         "Code" : "EG"
-    }   
+    },
+    "Ukraine" : {
+        "Data" : "",
+        "Code" : "UK"
+    },
 }
