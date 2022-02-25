@@ -10,7 +10,11 @@ VATSIM and its controllers operate under the slogan "As Real As It Gets". Not so
 ## Limitations
 
 ## Those other files?
-You can make a pull request to add your country to the list. If the data source does not cover your area however, an empty file will be created. 
+**AUP_UUPParser.py**
+Converts the online table into the plugin format and uploads them to Github automatically.
+
+**Countries.txt**
+You can make a pull request to add your country to the list. If the data source does not cover your area however, an empty datafile will be created. 
 
 ## Note
 All data provided by EC NM.
