@@ -1,8 +1,12 @@
+from numpy import block
 import pandas as pd
 from datetime import datetime
 from github import Github
 import requests
 import json
+import sys
+
+
 
 def uploadtoGithub(data, name):
     #Github token
@@ -33,11 +37,62 @@ def uploadtoGithub(data, name):
         repo.create_file(git_file, "committing files", content, branch="main")
         print(git_file + ' CREATED ' + str(datetime.now()))
 
-def parseAreas(countries,data):
-    for index, row in data.iterrows():
-    #RSA,NOTAM,REMARK,MNM FL,MAX FL,WEF,UNT,FUA/EU RS,FIR,UIR
+def mergetimes(area_df):
+    RSA = area_df["RSA"][0]
 
-      try:
+    merged_df = pd.DataFrame()
+    times = []
+    starts = list(area_df["UNT"])
+    ends = list(area_df["WEF"])
+    times.extend(starts)
+    times.extend(ends)
+    times = set(times)
+    times = list(times)
+    times.sort()
+
+    time = 0
+    Exit = len(times)
+
+    #For each time block
+    while time < Exit-1:
+        #Get current time block
+        block_start = times[time]
+        block_end = times[time+1]
+        
+        #Initialize block FL
+        low = sys.maxsize
+        high = 0
+
+        #Check all entries of the same RSA
+        for index, row in area_df.iterrows():
+            area_start = row["WEF"]
+            area_end = row["UNT"]
+            
+            area_low = row["MNM FL"]
+            area_high = row["MAX FL"]
+
+            #If entry is within our time frame amend FL-block
+            if area_start <= block_start and area_end >= block_end:
+                if area_low < low:
+                    low = area_low
+                if area_high > high:
+                    high = area_high
+
+        row = {"RSA" : RSA, "WEF" :  block_start, "UNT" :block_end, "MNM FL":low, "MAX FL": high }
+
+        #Add data for this time block
+        merged_df = merged_df.append(row,ignore_index=True)           
+
+        time += 1
+
+    return merged_df #All the data of each time block for one RSA
+
+def writeAreas(area,countries):
+    
+    #For all the data of each time block of one RSA
+    for index, row in area.iterrows():
+    #RSA,NOTAM,REMARK,MNM FL,MAX FL,WEF,UNT,FUA/EU RS,FIR,UIR
+      try: #To get data
         AreaName = row["RSA"]
         SchedStartDate = datetime.today().strftime('%m%d')
         SchedEndDate = datetime.today().strftime('%m%d')
@@ -49,14 +104,34 @@ def parseAreas(countries,data):
 
         row = f"{AreaName}:{SchedStartDate}:{SchedEndDate}:{SchedWeekdays}:{StartTime}:{EndTime}:{Lower}:{Upper}:From AUP/UUP\n"
 
-
+        #Save data
         for country in countries.keys():
             if AreaName.startswith(countries[country]["Code"]):
                 countries[country]["Data"] += row
+      
       except Exception as e:
           print("Couldn't read data on row ", index)
-          
-    
+
+    return countries
+
+def parseAreas(countries,data):
+    #Initialize
+    name = data["RSA"][0]
+    temp = pd.DataFrame()
+
+    #For every row in the csv
+    for index, row in data.iterrows():
+        #If area is the same, add it
+        if row["RSA"] == name:
+            temp = temp.append(row,ignore_index=True)
+
+        #If area is different, parse the previous area's entries and initialize a a clean df afterwards with current area
+        else:
+            areas = mergetimes(temp)
+            countries = writeAreas(areas,countries)
+            temp = pd.DataFrame().append(row,ignore_index=True)
+        
+        name = row["RSA"]
 
 try:
     countries = json.loads(requests.get("https://raw.githubusercontent.com/MatisseBE/VATSIMareas/main/Countries.txt").text)
