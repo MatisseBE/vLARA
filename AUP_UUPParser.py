@@ -31,7 +31,7 @@ def uploadtoGithub(data, name):
     git_file = name
     if git_file in all_files:
         contents = repo.get_contents(git_file)
-        repo.update_file(contents.path, "committing files", content, contents.sha , branch="main")
+        repo.update_file(contents.path, "%s" % (datetime.today().strftime('%Y-%m-%d-%H:%M')), content, contents.sha , branch="main")
         print(git_file + ' UPDATED ' + str(datetime.now()))
     else:
         repo.create_file(git_file, "committing files", content, branch="main")
@@ -80,8 +80,10 @@ def mergetimes(area_df):
 
         row = {"RSA" : RSA, "WEF" :  block_start, "UNT" :block_end, "MNM FL":low, "MAX FL": high }
 
-        #Add data for this time block
-        merged_df = merged_df.append(row,ignore_index=True)           
+        #If block-FL not altered, area was not active thus not appened
+        if high != 0 and low != sys.maxsize:
+            #Add data for this time block
+            merged_df = merged_df.append(row,ignore_index=True)           
 
         time += 1
 
@@ -102,8 +104,8 @@ def writeAreas(area,countries):
         Lower = int(row["MNM FL"])*100
         Upper = int(row["MAX FL"])*100
 
-        row = f"{AreaName}:{SchedStartDate}:{SchedEndDate}:{SchedWeekdays}:{StartTime}:{EndTime}:{Lower}:{Upper}:From AUP/UUP\n"
-
+        row = f"{AreaName}:{SchedStartDate}:{SchedEndDate}:{SchedWeekdays}:{StartTime}:{EndTime}:{Lower}:{Upper}:AUP/UUP\n"
+        print(row)
         #Save data
         for country in countries.keys():
             if AreaName.startswith(countries[country]["Code"]):
@@ -120,7 +122,7 @@ def parseAreas(countries,data):
     temp = pd.DataFrame()
 
     #For every row in the csv
-    for index, row in data.iterrows():
+    for index, row in data[:15].iterrows():
         #If area is the same, add it
         if row["RSA"] == name:
             temp = temp.append(row,ignore_index=True)
