@@ -2,40 +2,8 @@ import sys
 from datetime import datetime
 
 import pandas as pd
-from github import Github
 
-from services import get_countries_from_github
-
-
-def uploadtoGithub(data, name):
-    # Github token
-    with open("token.txt", "r") as file:
-        token = file.read()
-
-    g = Github(token)
-
-    repo = g.get_user().get_repo("VATSIMareas")
-    all_files = []
-    contents = repo.get_contents("")
-    while contents:
-        file_content = contents.pop(0)
-        if file_content.type == "dir":
-            contents.extend(repo.get_contents(file_content.path))
-        else:
-            file = file_content
-            all_files.append(str(file).replace('ContentFile(path="', '').replace('")', ''))
-
-    content = data
-
-    git_file = name
-    if git_file in all_files:
-        contents = repo.get_contents(git_file)
-        repo.update_file(contents.path, "%s" % (datetime.today().strftime('%Y-%m-%d-%H:%M')), content, contents.sha,
-                         branch="main")
-        print(git_file + ' UPDATED ' + str(datetime.now()))
-    else:
-        repo.create_file(git_file, "committing files", content, branch="main")
-        print(git_file + ' CREATED ' + str(datetime.now()))
+from services import get_countries_from_github, upload_to_github
 
 
 def mergetimes(area_df):
@@ -106,7 +74,7 @@ def writeAreas(area, countries):
             Upper = int(row["MAX FL"]) * 100
 
             row = f"{AreaName}:{SchedStartDate}:{SchedEndDate}:{SchedWeekdays}:{StartTime}:{EndTime}:{Lower}:{Upper}:AUP/UUP\n"
-            print(row)
+            # print(row)
             # Save data
             for country in countries.keys():
                 if AreaName.startswith(countries[country]["Code"]):
@@ -141,12 +109,11 @@ def parse_areas(countries, data):
 def main():
     countries = get_countries_from_github("https://raw.githubusercontent.com/MatisseBE/VATSIMareas/main/Countries.txt")
     data = pd.read_csv("areas.csv")
-
+    print(data)
     parse_areas(countries, data)
 
     for country in countries.keys():
-        print(countries[country]["Data"])
-        # uploadtoGithub(countries[country]["Data"], "Datafiles/%s.txt" % (country))
+        upload_to_github(countries[country]["Data"], "Datafiles/%s.txt" % (country))
 
 
 if __name__ == '__main__':
