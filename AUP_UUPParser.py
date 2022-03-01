@@ -1,11 +1,10 @@
-from numpy import block
-import pandas as pd
-from datetime import datetime
-from github import Github
-import requests
 import json
 import sys
+from datetime import datetime
 
+import pandas as pd
+import requests
+from github import Github
 
 
 def uploadtoGithub(data, name):
