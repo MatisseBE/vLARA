@@ -138,18 +138,24 @@ def parseAreas(countries, data):
         name = row["RSA"]
 
 
-try:
-    countries = json.loads(
-        requests.get("https://raw.githubusercontent.com/MatisseBE/VATSIMareas/main/Countries.txt").text)
-    data = pd.read_csv("areas.csv")
+def main():
+    try:
+        countries = json.loads(
+            requests.get("https://raw.githubusercontent.com/MatisseBE/VATSIMareas/main/Countries.txt").text)
+        data = pd.read_csv("areas.csv")
 
-except Exception as e:
-    print("Could not get countries or data from Github")
-    print(e.args)
+    except Exception as e:
+        print("Could not get countries or data from Github")
+        print(e.args)
 
-# Parse data
-parseAreas(countries, data)
+    # Parse data
+    parseAreas(countries, data)
 
-# Upload data
-for country in countries.keys():
-    uploadtoGithub(countries[country]["Data"], "Datafiles/%s.txt" % (country))
+    # Upload data
+    for country in countries.keys():
+        print(countries[country]["Data"])
+        # uploadtoGithub(countries[country]["Data"], "Datafiles/%s.txt" % (country))
+
+
+if __name__ == '__main__':
+    main()
