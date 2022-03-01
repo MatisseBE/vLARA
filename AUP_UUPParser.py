@@ -1,10 +1,10 @@
-import json
 import sys
 from datetime import datetime
 
 import pandas as pd
-import requests
 from github import Github
+
+from services import get_countries_from_github
 
 
 def uploadtoGithub(data, name):
@@ -139,19 +139,11 @@ def parseAreas(countries, data):
 
 
 def main():
-    try:
-        countries = json.loads(
-            requests.get("https://raw.githubusercontent.com/MatisseBE/VATSIMareas/main/Countries.txt").text)
-        data = pd.read_csv("areas.csv")
+    countries = get_countries_from_github("https://raw.githubusercontent.com/MatisseBE/VATSIMareas/main/Countries.txt")
+    data = pd.read_csv("areas.csv")
 
-    except Exception as e:
-        print("Could not get countries or data from Github")
-        print(e.args)
-
-    # Parse data
     parseAreas(countries, data)
 
-    # Upload data
     for country in countries.keys():
         print(countries[country]["Data"])
         # uploadtoGithub(countries[country]["Data"], "Datafiles/%s.txt" % (country))
