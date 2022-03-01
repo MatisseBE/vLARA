@@ -118,7 +118,7 @@ def writeAreas(area, countries):
     return countries
 
 
-def parseAreas(countries, data):
+def parse_areas(countries, data):
     # Initialize
     name = data["RSA"][0]
     temp = pd.DataFrame()
@@ -142,7 +142,7 @@ def main():
     countries = get_countries_from_github("https://raw.githubusercontent.com/MatisseBE/VATSIMareas/main/Countries.txt")
     data = pd.read_csv("areas.csv")
 
-    parseAreas(countries, data)
+    parse_areas(countries, data)
 
     for country in countries.keys():
         print(countries[country]["Data"])
