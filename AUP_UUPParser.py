@@ -1,12 +1,11 @@
 from numpy import block
 import pandas as pd
 from datetime import datetime
+from datetime import timedelta
 from github import Github
 import requests
 import json
 import sys
-
-
 
 def uploadtoGithub(data, name):
     #Github token
@@ -37,10 +36,10 @@ def uploadtoGithub(data, name):
         repo.create_file(git_file, "committing files", content, branch="main")
         print(git_file + ' CREATED ' + str(datetime.now()))
 
-def mergetimes(area_df):
+def CreateTimeBlocks(area_df):
     RSA = area_df["RSA"][0]
 
-    merged_df = pd.DataFrame()
+    parsed_df = pd.DataFrame()
     times = []
     starts = list(area_df["UNT"])
     ends = list(area_df["WEF"])
@@ -71,6 +70,8 @@ def mergetimes(area_df):
             area_low = row["MNM FL"]
             area_high = row["MAX FL"]
 
+            #print(block_start, area_start , area_end , block_end)
+
             #If entry is within our time frame amend FL-block
             if area_start <= block_start and area_end >= block_end:
                 if area_low < low:
@@ -80,32 +81,34 @@ def mergetimes(area_df):
 
         row = {"RSA" : RSA, "WEF" :  block_start, "UNT" :block_end, "MNM FL":low, "MAX FL": high }
 
-        #If block-FL not altered, area was not active thus not appened
+        #If the block-FL not altered and remained max,0 then the area never became active. There's a break between activation times therefore we do not append
         if high != 0 and low != sys.maxsize:
             #Add data for this time block
-            merged_df = merged_df.append(row,ignore_index=True)           
+            parsed_df = parsed_df.append(row,ignore_index=True)      
+        
+        time += 1 #Go to the next time block
 
-        time += 1
-
-    return merged_df #All the data of each time block for one RSA
+    return parsed_df #All the data of each time block for one RSA
 
 def writeAreas(area,countries):
-    
     #For all the data of each time block of one RSA
-    for index, row in area.iterrows():
     #RSA,NOTAM,REMARK,MNM FL,MAX FL,WEF,UNT,FUA/EU RS,FIR,UIR
+    for index, row in area.iterrows():
       try: #To get data
         AreaName = row["RSA"]
+        
         SchedStartDate = datetime.today().strftime('%m%d')
         SchedEndDate = datetime.today().strftime('%m%d')
+        
+        StartTime = row["WEF"].strftime('%H%M')
+        EndTime = row["UNT"].strftime('%H%M')
+
         SchedWeekdays = datetime.today().weekday() + 1
-        StartTime = "".join(row["WEF"].split(":"))
-        EndTime = "".join(row["UNT"].split(":"))
+
         Lower = int(row["MNM FL"])*100
         Upper = int(row["MAX FL"])*100
 
         row = f"{AreaName}:{SchedStartDate}:{SchedEndDate}:{SchedWeekdays}:{StartTime}:{EndTime}:{Lower}:{Upper}:AUP/UUP\n"
-        print(row)
         #Save data
         for country in countries.keys():
             if AreaName.startswith(countries[country]["Code"]):
@@ -116,28 +119,44 @@ def writeAreas(area,countries):
 
     return countries
 
+def Parsedates(row):
+    date = datetime.today().strftime('%Y-%m-%d')
+    
+    row["WEF"] = datetime.strptime('%s %s' % (date,row["WEF"]), '%Y-%m-%d %H:%M')
+    row["UNT"] = datetime.strptime('%s %s' % (date,row["UNT"]), '%Y-%m-%d %H:%M')
+    midnight = datetime.strptime('%s %s' % (date,"00:00"), '%Y-%m-%d %H:%M') 
+    if row["WEF"] > row["UNT"] and row["UNT"] >= midnight: #Later than midnight is next day, but only if start time later than end (Otherwise later than midnight is same day)
+        row["UNT"] += timedelta(days=1)
+
+    return row
+
 def parseAreas(countries,data):
     #Initialize
     name = data["RSA"][0]
     temp = pd.DataFrame()
 
     #For every row in the csv
-    for index, row in data[:15].iterrows():
-        #If area is the same, add it
-        if row["RSA"] == name:
-            temp = temp.append(row,ignore_index=True)
+    for index, row in data.iterrows():
+        try:
+            row = Parsedates(row)
 
-        #If area is different, parse the previous area's entries and initialize a a clean df afterwards with current area
-        else:
-            areas = mergetimes(temp)
-            countries = writeAreas(areas,countries)
-            temp = pd.DataFrame().append(row,ignore_index=True)
+            #If area is the same, add it
+            if row["RSA"] == name:
+                temp = temp.append(row,ignore_index=True)
+            
+            #If area is different, parse the previous entries first, then initialize a a clean df with current entry
+            else:
+                areas = CreateTimeBlocks(temp)
+                countries = writeAreas(areas,countries)
+                temp = pd.DataFrame().append(row,ignore_index=True)
+        except:
+            print("Error with row", index)
         
         name = row["RSA"]
 
 try:
     countries = json.loads(requests.get("https://raw.githubusercontent.com/MatisseBE/VATSIMareas/main/Countries.txt").text)
-    data = pd.read_csv("areas.csv")
+    data = pd.read_csv("areas.csv") 
 
 except Exception as e:
     print("Could not get countries or data from Github")
