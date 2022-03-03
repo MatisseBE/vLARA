@@ -66,11 +66,18 @@ def CreateTimeBlocks(area_df):
         for index, row in area_df.iterrows():
             area_start = row["WEF"]
             area_end = row["UNT"]
-            
-            area_low = row["MNM FL"]
-            area_high = row["MAX FL"]
 
-            #print(block_start, area_start , area_end , block_end)
+            if str(int(row["MNM FL"])).lstrip('0') == "": # "0" ==> ""
+                area_low = 0
+            else:
+                area_low = int(str(int(row["MNM FL"])).lstrip('0')) #"095" ==> 95
+
+
+            if str(int(row["MAX FL"])).lstrip('0') == "": 
+                area_high = 0
+            else:
+                area_high = int(str(int(row["MAX FL"])).lstrip('0'))
+
 
             #If entry is within our time frame amend FL-block
             if area_start <= block_start and area_end >= block_end:
@@ -95,11 +102,11 @@ def writeAreas(area,countries):
     #RSA,NOTAM,REMARK,MNM FL,MAX FL,WEF,UNT,FUA/EU RS,FIR,UIR
     for index, row in area.iterrows():
       try: #To get data
-        AreaName = row["RSA"]
         
-        SchedStartDate = datetime.today().strftime('%m%d')
-        SchedEndDate = datetime.today().strftime('%m%d')
-        
+        AreaName = row["RSA"]        
+        SchedStartDate = row["WEF"].strftime('%m%d')
+        SchedEndDate = row["UNT"].strftime('%m%d')
+
         StartTime = row["WEF"].strftime('%H%M')
         EndTime = row["UNT"].strftime('%H%M')
 
@@ -121,7 +128,6 @@ def writeAreas(area,countries):
 
 def Parsedates(row):
     date = datetime.today().strftime('%Y-%m-%d')
-    
     row["WEF"] = datetime.strptime('%s %s' % (date,row["WEF"]), '%Y-%m-%d %H:%M')
     row["UNT"] = datetime.strptime('%s %s' % (date,row["UNT"]), '%Y-%m-%d %H:%M')
     midnight = datetime.strptime('%s %s' % (date,"00:00"), '%Y-%m-%d %H:%M') 
@@ -152,7 +158,7 @@ def parseAreas(countries,data):
         except:
             print("Error with row", index)
         
-        name = row["RSA"]
+    name = row["RSA"]
 
 try:
     countries = json.loads(requests.get("https://raw.githubusercontent.com/MatisseBE/VATSIMareas/main/Countries.txt").text)
