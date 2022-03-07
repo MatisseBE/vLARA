@@ -12,6 +12,8 @@ Successive time-blocks of RSA with identical FL-blocks may still be separated en
 
 Under normal circumstances the data gets updated once every morning. This is no guarentee however until there's a host device for the project.
 
+TODO: Remove buffer zones (ending with Z)
+
 ## Those other files?
 **AUP_UUPParser.py**
 
