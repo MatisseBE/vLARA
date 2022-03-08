@@ -14,6 +14,9 @@ Under normal circumstances the data gets updated once every morning. This is no 
 
 TODO: Remove buffer zones (ending with Z)
 
+## How
+Until proper plugin integration, I advise downloading your relevant areas before opening Euroscope and putting them into the "TopskyAreasManualAct.txt" file. In short, we use this new file as an extention to the normal areas file. If done correctly, a popup will show "TopskyAreasManualAct file in use" upon launching Euroscope.
+
 ## Those other files?
 **AUP_UUPParser.py**
 
