@@ -12,8 +12,6 @@ Successive time-blocks of RSA with identical FL-blocks may still be separated en
 
 Under normal circumstances the data gets updated once every morning. This is no guarentee however until there's a host device for the project.
 
-TODO: Remove buffer zones (ending with Z)
-
 ## How
 Until proper plugin integration, I advise downloading your relevant areas before opening Euroscope and putting them into the "TopskyAreasManualAct.txt" file. In short, we use this new file as an extention to the normal areas file. If done correctly, a popup will show "TopskyAreasManualAct file in use" upon launching Euroscope.
 
