@@ -25,8 +25,10 @@ Converts the online table into the plugin format and uploads them to Github auto
 
 You can make a pull request to add your country to the list. If the data source does not cover your area however, an empty datafile will be created. 
 
-## Note
+## Notes
 All data provided by EC NM.
+
+Some entries may be included twice. Once with the expected area and once with that same area ending in a "Z". These are buffer zones around the main area and are for flightplan purposes only. You may therefor ignore them.
 
 For flightsimulation only!
 
