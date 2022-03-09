@@ -28,7 +28,7 @@ You can make a pull request to add your country to the list. If the data source 
 ## Notes
 All data provided by EC NM.
 
-Some entries may be included twice. Once with the expected area and once with that same area ending in a "Z". These are buffer zones around the main area and are for flightplan purposes only. You may therefor ignore them.
+Some entries may seem to be be included twice. Once with the expected area and once with that same area, but ending in a "Z" (RSA ID + Z). These are (Flight plan) buffer zones (aka FBZ) around the main area and are used for flightplan purposes only. You may therefor ignore them.
 
 For flightsimulation only!
 
