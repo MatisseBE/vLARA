@@ -1,4 +1,4 @@
-# VATSIM Areas
+# Virtual Local and sub-regional airspace management support system (LARA)
 
 
 ## What?
