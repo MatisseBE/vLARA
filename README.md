@@ -26,13 +26,14 @@ Converts the online table into the plugin format and uploads them to Github auto
 You can make a pull request to add your country to the list. If the data source does not cover your area however, an empty datafile will be created. 
 
 ## Notes
-All data provided by [European AUP/UUP EUROCONTROL](https://www.public.nm.eurocontrol.int/PUBPORTAL/gateway/spec/).
 
 Some entries may seem to be be included twice. Once with the expected area and once with that same area, but ending in a "Z" (RSA ID + Z). These are (Flight plan) buffer zones (aka FBZ) around the main area and are used for flightplan purposes only. You may therefor ignore them.
 
 However some countries will only publish these FBZ to the NM. In this case you can use them to process your areas. Note that the vertical bounds in this case may differ from the actual area you are trying to simulate. This is precisely because it is a buffer zone. You can find more [here](https://www.eurocontrol.int/sites/default/files/2020-07/eurocontrol-nm-fpl-req-guidilines-v1.3.pdf) under "4.5 Flight Buffer Zone (FBZ)".
 
-For flightsimulation only!
-
 Made with love ❤, and a lot of cookies 🍪
+
+All data provided by [European AUP/UUP EUROCONTROL](https://www.public.nm.eurocontrol.int/PUBPORTAL/gateway/spec/).
+
+For flightsimulation only!
 
