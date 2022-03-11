@@ -26,7 +26,7 @@ Converts the online table into the plugin format and uploads them to Github auto
 You can make a pull request to add your country to the list. If the data source does not cover your area however, an empty datafile will be created. 
 
 ## Notes
-All data provided by EC NM.
+All data provided by [EC NM](https://www.public.nm.eurocontrol.int/PUBPORTAL/gateway/spec/).
 
 Some entries may seem to be be included twice. Once with the expected area and once with that same area, but ending in a "Z" (RSA ID + Z). These are (Flight plan) buffer zones (aka FBZ) around the main area and are used for flightplan purposes only. You may therefor ignore them.
 
