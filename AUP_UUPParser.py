@@ -14,7 +14,7 @@ def uploadtoGithub(data, name):
 
     g = Github(token)
 
-    repo = g.get_user().get_repo("VATSIMareas")
+    repo = g.get_user().get_repo("vLARA")
     all_files = []
     contents = repo.get_contents("")
     while contents:
@@ -49,6 +49,8 @@ def CreateTimeBlocks(area_df):
     times = list(times)
     times.sort()
 
+
+
     time = 0
     Exit = len(times)
 
@@ -81,12 +83,14 @@ def CreateTimeBlocks(area_df):
 
             #If entry is within our time frame amend FL-block
             if area_start <= block_start and area_end >= block_end:
+            #if block_start <= area_start and area_end <= block_end:
                 if area_low < low:
                     low = area_low
                 if area_high > high:
                     high = area_high
 
         row = {"RSA" : RSA, "WEF" :  block_start, "UNT" :block_end, "MNM FL":low, "MAX FL": high }
+        #print(row)
 
         #If the block-FL not altered and remained max,0 then the area never became active. There's a break between activation times therefore we do not append
         if high != 0 and low != sys.maxsize:
@@ -116,6 +120,8 @@ def writeAreas(area,countries):
         Upper = int(row["MAX FL"])*100
 
         row = f"{AreaName}:{SchedStartDate}:{SchedEndDate}:{SchedWeekdays}:{StartTime}:{EndTime}:{Lower}:{Upper}:AUP/UUP\n"
+        #print(row)
+        
         #Save data
         for country in countries.keys():
             if AreaName.startswith(countries[country]["Code"]):
@@ -131,7 +137,7 @@ def Parsedates(row):
     row["WEF"] = datetime.strptime('%s %s' % (date,row["WEF"]), '%Y-%m-%d %H:%M')
     row["UNT"] = datetime.strptime('%s %s' % (date,row["UNT"]), '%Y-%m-%d %H:%M')
     midnight = datetime.strptime('%s %s' % (date,"00:00"), '%Y-%m-%d %H:%M') 
-    if row["WEF"] > row["UNT"] and row["UNT"] >= midnight: #Later than midnight is next day, but only if start time later than end (Otherwise later than midnight is same day)
+    if row["WEF"] >= row["UNT"] and row["UNT"] >= midnight: #Later than midnight is next day, but only if start time later than end (Otherwise later than midnight is same day)(Same time means active all day)
         row["UNT"] += timedelta(days=1)
 
     return row
@@ -149,19 +155,22 @@ def parseAreas(countries,data):
             #If area is the same, add it
             if row["RSA"] == name:
                 temp = temp.append(row,ignore_index=True)
+                #print("Added to previous")
             
             #If area is different, parse the previous entries first, then initialize a a clean df with current entry
             else:
+                #print("Different from previous")
                 areas = CreateTimeBlocks(temp)
                 countries = writeAreas(areas,countries)
                 temp = pd.DataFrame().append(row,ignore_index=True)
         except:
             print("Error with row", index)
+        finally:
+            name = row["RSA"]
         
-    name = row["RSA"]
 
 try:
-    countries = json.loads(requests.get("https://raw.githubusercontent.com/MatisseBE/VATSIMareas/main/Countries.txt").text)
+    countries = json.loads(requests.get("https://raw.githubusercontent.com/MatisseBE/vLARA/main/Countries.txt").text)
     data = pd.read_csv("areas.csv") 
 
 except Exception as e:
