@@ -31,9 +31,9 @@ Some entries may seem to be be included twice. Once with the expected area and o
 
 However some countries will only publish these FBZ to the NM. In this case you can use them to process your areas. Note that the vertical bounds in this case may differ from the actual area you are trying to simulate. This is precisely because it is a buffer zone. You can find more [here](https://www.eurocontrol.int/sites/default/files/2020-07/eurocontrol-nm-fpl-req-guidilines-v1.3.pdf) under "4.5 Flight Buffer Zone (FBZ)".
 
-Made with love ❤, and a lot of cookies 🍪
-
 All data provided by [European AUP/UUP EUROCONTROL](https://www.public.nm.eurocontrol.int/PUBPORTAL/gateway/spec/).
+
+Made with love ❤, and a lot of cookies 🍪
 
 For flightsimulation only!
 
