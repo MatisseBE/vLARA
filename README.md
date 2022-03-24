@@ -24,6 +24,7 @@ Converts the online table into the plugin format and uploads them to Github auto
 **Countries.txt**
 
 You can make a pull request to add your country to the list. If the data source does not cover your area however, an empty datafile will be created. 
+To assess you luck, check [this link](https://www.lara-eu.org/)!
 
 ## Notes
 
