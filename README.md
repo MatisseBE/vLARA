@@ -12,6 +12,7 @@ From now on we will be using these API endpoints:
 * https://eaup.ambitio.cyou/eb
 * https://eaup.ambitio.cyou/topsky/eb
 * https://eaup.ambitio.cyou/raw
+
 This means this repositoy is deprecated and only exist for future reference and archiving purposes.
 For active developpement and documentation on the API endpoints, navigate [here](https://gitlab.com/portugal-vacc/eaup/).
 
