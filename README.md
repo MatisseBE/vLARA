@@ -1,4 +1,4 @@
-# Virtual Local and sub-regional airspace management support system (LARA)
+# Virtual Local and sub-regional Airspace MAnagement support system (vLARA)
 
 
 ## What?
