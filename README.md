@@ -1,5 +1,9 @@
 # Virtual Local and sub-Regional Airspace management support system (vLARA)
 
+# Update
+API can now be found here:
+https://dev-eaup.ambitio.cyou/api/docs
+
 
 ## What?
 ![image](https://user-images.githubusercontent.com/51272243/159242206-294ff5c4-ec67-424d-b993-c40feb0ce1f8.png)
