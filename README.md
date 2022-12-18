@@ -2,7 +2,7 @@
 
 # Update
 API can now be found here:
-https://dev-eaup.ambitio.cyou/api/docs
+https://eaup.vatsim.pt/api/docs
 
 
 ## What?
