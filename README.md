@@ -8,7 +8,7 @@ https://eaup.vatsim.pt/api/docs
 Gitlab project:
 https://gitlab.com/portugal-vacc/eaup
 
-**Looking for a front end dev to visualise areas (Gantt type charts and maps). Please get in touch if you are interested.**
+**Looking for a front end web dev to visualise areas (Gantt type charts and maps). Please get in touch if you are interested.**
 
 
 ## What?
