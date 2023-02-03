@@ -4,11 +4,11 @@
 API can now be found here:
 https://eaup.vatsim.pt/api/docs
 
-Looking for a front end dev to visualise areas (Gantt type charts and maps). Please get in touch if you are interested.
-
 
 Gitlab project:
 https://gitlab.com/portugal-vacc/eaup
+
+**Looking for a front end dev to visualise areas (Gantt type charts and maps). Please get in touch if you are interested.
 
 
 ## What?
